@@ -1,0 +1,54 @@
+name: Sync to Grip
+
+# On every push to main that touches the add-on, copy it into oleroma/Grip/extensions/grip_controls.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "grip_controls/**"
+  workflow_dispatch:
+
+concurrency:
+  group: sync-to-grip
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/checkout@v4
+        with:
+          repository: oleroma/Grip
+          ref: main
+          path: grip
+          token: ${{ secrets.GRIP_DISPATCH_TOKEN }}
+          lfs: false
+
+      - name: Copy add-on into Grip
+        run: |
+          rm -rf grip/extensions/grip_controls
+          mkdir -p grip/extensions/grip_controls
+          cp -r grip_controls/. grip/extensions/grip_controls/
+          find grip/extensions/grip_controls -name "__pycache__" -type d -prune -exec rm -rf {} +
+
+      - name: Commit and push if changed
+        working-directory: grip
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A extensions/grip_controls
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+          git commit -m "Sync grip_controls from ${GITHUB_SHA::7}"
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep $((i * 5))
+          done
+          exit 1
