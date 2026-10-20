@@ -1,6 +1,10 @@
 """Tests for the Grip Controls extension. Run with a Python that has the bpy module (Blender 5.2 or newer):
 
-    python -I extensions/grip_controls/tests/test_grip_controls.py
+    python -I tests/test_grip_controls.py
+
+The add-on is enabled from this repository (its root is used as the extensions folder). The tracking.json tests read
+blender/tracking.json from a Grip clone: set GRIP_REPO to its path, or keep it next to this repository as ../Grip.
+They are skipped when the file is not found.
 
 Grip.blend is not opened. The tests build node groups named like the ones in Grip.blend, enable the add-on from
 the extensions folder the way a user does (a local repository), and check what the panels find and draw.
@@ -21,10 +25,10 @@ import unittest
 from types import SimpleNamespace
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-EXT_DIR = os.path.dirname(HERE)
-EXTENSIONS = os.path.dirname(EXT_DIR)
-REPO = os.path.dirname(EXTENSIONS)
-TRACKING = os.path.join(REPO, "blender", "tracking.json")
+EXTENSIONS = os.path.dirname(HERE)
+EXT_DIR = os.path.join(EXTENSIONS, "grip_controls")
+GRIP = os.environ.get("GRIP_REPO") or os.path.join(os.path.dirname(EXTENSIONS), "Grip")
+TRACKING = os.path.join(GRIP, "blender", "tracking.json")
 
 # Keep Blender's user folders out of the real ones, and no __pycache__ in the repository
 _USER = tempfile.mkdtemp(prefix="grip_controls_test_")
