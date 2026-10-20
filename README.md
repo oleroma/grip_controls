@@ -1,3 +1,13 @@
+<h1 align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./media/logo_light.svg">
+    <source media="(prefers-color-scheme: light)" srcset="./media/logo_dark.svg">
+    <!-- The fallback image for older browsers -->
+    <img alt="grip_controls" src="./media/logo_light.svg" width="200">
+  </picture>
+  <br>
+</h1>
+
 # Grip Controls
 
 A front panel for `blender/Grip.blend`. It adds a **Grip** tab to the 3D Viewport sidebar (press **N**) with the settings people change most: which controller is built, how smooth the preview is, how tight parts fit, the feature switches, and the main sizes and positions of triggers, bumpers, sticks, buttons and the battery compartment.
