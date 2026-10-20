@@ -4,7 +4,7 @@ A front panel for `blender/Grip.blend`. It adds a **Grip** tab to the 3D Viewpor
 
 It does not replace the controls panel (`GripV controls`, `GripX controls`). Everything else is still there. The tab is a shortcut to the values you reach for most, without going into node groups.
 
-Every field in the tab is the real node input, shown in another place. Changing it is exactly the same as changing it in the node editor: undo works, and `blender_tracking` records it in `blender/tracking.json` when you save. Hover the name of a setting to see what it does. The tab shows the input's tooltip from the file, once `scripts/apply_tooltips.py` has written the tooltips into Grip.blend; until then the tooltip only names the node and input.
+Every field in the tab is the real node input, shown in another place. Changing it is exactly the same as changing it in the node editor: undo works, and `blender_tracking` records it in `blender/tracking.json` when you save. Hover the name of a setting to see what it does. The tab shows the input's tooltip from the file, once Grip's `scripts/apply_tooltips.py` has written the tooltips into Grip.blend; until then the tooltip only names the node and input.
 
 ## Enable it
 
@@ -22,7 +22,7 @@ It needs Blender 5.2 or newer. In any other file than Grip.blend the tab only sa
 |---|---|
 | **Controller** | `variant`, `style` (GripX only) and `body type`, plus only the switches that matter for the chosen body (for example `fill type` for `indent`, `screws hollow` for shells). It warns when `variant` does not match the scene you are looking at, and has the variant sync (below). |
 | **Preview quality** | `subdivision level` and `voxel resolution`. Keep both low while you edit; the export presets raise them on their own. |
-| **Fit** | the three global menus `tolerance`, `press tolerance` and `cap tolerance`. Each part decides what tight, default and loose mean for itself; see [Fit and tolerances](../../docs/blender/customize/03-fit-and-tolerances.md). |
+| **Fit** | the three global menus `tolerance`, `press tolerance` and `cap tolerance`. Each part decides what tight, default and loose mean for itself; see [Fit and tolerances](https://github.com/oleroma/Grip/blob/main/docs/blender/customize/03-fit-and-tolerances.md). |
 | **Features** | the global switches: `cable holder`, `stock bumpers`, wire cutouts, `horizontal buttons`, `button logo`, `marks`. |
 | **Parts** | quick settings of the active variant (and, for GripX, the active style): R2 and R4 trigger length, width and position; bumper size and position; stick height, tilt range and top; the size of the four button families; the battery size. |
 
@@ -74,10 +74,10 @@ To **add a field**, add a `FieldSpec` to a block in `SECTIONS` (or a name to one
 ## Tests
 
 ```
-python -I extensions/grip_controls/tests/test_grip_controls.py
+python -I tests/test_grip_controls.py
 ```
 
-Use a Python with the `bpy` module of Blender 5.2 or newer. The tests do not open Grip.blend. They build node groups named like the real ones, enable the add-on from the `extensions/` folder the way a user does, and check what the panels find and draw, that drawing writes nothing, the variant sync and the clean-up when the add-on is disabled. Two groups follow the real file through `blender/tracking.json`: one checks that every path the add-on reads exists there, the other rebuilds the preset groups from the recorded nodes and links and runs the add-on's lookups on that real wiring (which trigger, bumper and cover node is used, every GripX stick preset, which inputs are linked).
+The tests live in this repository only; they are not copied into Grip. Use a Python with the `bpy` module of Blender 5.2 or newer. The tests do not open Grip.blend. They build node groups named like the real ones, enable the add-on from the `extensions/` folder the way a user does, and check what the panels find and draw, that drawing writes nothing, the variant sync and the clean-up when the add-on is disabled. Two groups follow the real file through Grip's `blender/tracking.json` (set `GRIP_REPO` to your Grip clone, or keep it next to this repository as `../Grip`; without it they are skipped): one checks that every path the add-on reads exists there, the other rebuilds the preset groups from the recorded nodes and links and runs the add-on's lookups on that real wiring (which trigger, bumper and cover node is used, every GripX stick preset, which inputs are linked).
 
 ## License
 
